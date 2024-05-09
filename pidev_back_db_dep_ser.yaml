@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-pidev-backend-database
+  labels:
+    app: label-deployment-pidev-backend-database
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: label-deployment-pidev-backend-database
+  template:
+    metadata:
+      labels:
+        app: label-deployment-pidev-backend-database
+    spec:
+      containers:
+      - name: pidev-database
+        image: mysql:latest
+        env:
+          # Set MySQL root user and password (note that this is insecure for production)
+          - name: MYSQL_ROOT_PASSWORD
+            value: "root"
+        ports:
+        - containerPort: 3306
+          name: mysql
+      - name: pidev-backend
+        image: mdjdocker/arctic4_pidev_backend:latest
+        ports:
+        - containerPort: 9000
+          name: backend
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 5
+          periodSeconds: 20
+          failureThreshold: 3
+      restartPolicy: Always
+
+---
+
+# Backend Service NodePort
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-pidev-backend-nodeport
+  labels:
+    app: label-service-pidev-backend-database-nodeport
+spec:
+  selector:
+    app: label-deployment-pidev-backend-database
+  ports:
+  - port: 9000  
+    targetPort: 9000
+    nodePort: 30001  
+  type: NodePort
+
+---
+
+# Backend Service ClusterIP
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-pidev-backend-clusterip
+  labels:
+    app: label-service-pidev-backend-database-clusterip
+spec:
+  selector:
+    app: label-deployment-pidev-backend-database
+  ports:
+  - port: 9000  
+    targetPort: 9000
+  type: ClusterIP

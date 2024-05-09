@@ -1,0 +1,51 @@
+# Frontend Pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-pidev-frontend
+  labels:
+    app: label-pod-pidev-frontend
+spec:
+  containers:
+  - name: pidev-frontend
+    image: mdjdocker/arctic4:pidev_frontend:latest
+    ports:
+    - containerPort: 80  
+    
+---
+
+# Frontend Service NodePort
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-pidev-frontend-nodeport
+  labels:
+    app: label-service-pidev-frontend-nodeport
+spec:
+  selector:
+    app: label-pod-pidev-frontend
+  ports:
+  - port: 80 
+    targetPort: 80
+    nodePort: 30002
+  type: NodePort
+  
+---
+
+# Frontend Service ClusterIP
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-pidev-frontend-clusterip
+  labels:
+    app: label-service-pidev-frontend-clusterip
+spec:
+  selector:
+    app: label-pod-pidev-frontend
+  ports:
+  - port: 80  
+    targetPort: 80
+  type: ClusterIP
