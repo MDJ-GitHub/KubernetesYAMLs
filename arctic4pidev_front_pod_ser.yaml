@@ -9,7 +9,7 @@ metadata:
 spec:
   containers:
   - name: pidev-frontend
-    image: mdjdocker/arctic4:pidev_frontend:latest
+    image: mdjdocker/arctic4_pidev_frontend:latest
     ports:
     - containerPort: 80  
     
