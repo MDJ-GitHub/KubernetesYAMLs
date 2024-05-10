@@ -12,7 +12,7 @@ spec:
     image: mdjdocker/arctic4_pidev_frontend:latest
     ports:
     - containerPort: 80
-    name: port-pidev-frontend
+    name: cport-80
     
 ---
 

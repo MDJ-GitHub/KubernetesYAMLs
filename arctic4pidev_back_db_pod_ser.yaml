@@ -20,9 +20,9 @@ spec:
     image: mdjdocker/arctic4_pidev_backend:latest
     ports:
     - containerPort: 9000
-      name: port-pidev-backend-9000
+      name: cport-9000
     - containerPort: 2424
-      name: port-pidev-backend-2424
+      name: cport-2424
     livenessProbe: 
       tcpSocket:
         port: 3306 
