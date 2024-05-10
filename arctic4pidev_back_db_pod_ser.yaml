@@ -15,7 +15,7 @@ spec:
         value: "root"
     ports:
     - containerPort: 3306
-      name: port-pidev-database
+      name: cport-3306
   - name: pidev-backend
     image: mdjdocker/arctic4_pidev_backend:latest
     ports:
