@@ -32,7 +32,6 @@ spec:
           name: cport-9000
         - containerPort: 2424
           name: cport-2424
-          name: backend
         livenessProbe:
           tcpSocket:
             port: 3306

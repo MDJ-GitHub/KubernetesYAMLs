@@ -24,13 +24,14 @@ spec:
             value: "root"
         ports:
         - containerPort: 3306
-          name: mysql
+          name: cport-3306
       - name: pidev-backend
         image: mdjdocker/arctic4_pidev_backend:latest
         ports:
         - containerPort: 9000
+          name: cport-9000
         - containerPort: 2424
-          name: backend
+          name: cport-2424
         livenessProbe:
           tcpSocket:
             port: 3306
@@ -110,6 +111,7 @@ spec:
         image: mdjdocker/arctic4_pidev_frontend:latest
         ports:
         - containerPort: 80
+          name: cport-80
     
 ---
 
@@ -126,6 +128,7 @@ spec:
     app: label-deployment-pidev-frontend
   ports:
   - port: 80 
+    name: port-80
     targetPort: 80
     nodePort: 30002
   type: NodePort
@@ -144,6 +147,7 @@ spec:
   selector:
     app: label-deployment-pidev-frontend
   ports:
-  - port: 80  
+  - port: 80
+    name: port-80
     targetPort: 80
   type: ClusterIP
