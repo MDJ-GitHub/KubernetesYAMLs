@@ -11,7 +11,6 @@ spec:
   - name: pidev-database
     image: mysql:latest
     env:
-      # Set MySQL root user and password (not recommended for production)
       - name: MYSQL_ROOT_PASSWORD
         value: "root"
     ports:

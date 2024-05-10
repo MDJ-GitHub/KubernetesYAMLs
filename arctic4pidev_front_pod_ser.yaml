@@ -11,7 +11,8 @@ spec:
   - name: pidev-frontend
     image: mdjdocker/arctic4_pidev_frontend:latest
     ports:
-    - containerPort: 80  
+    - containerPort: 80
+    name: port-pidev-frontend
     
 ---
 
@@ -27,7 +28,8 @@ spec:
   selector:
     app: label-pod-pidev-frontend
   ports:
-  - port: 80 
+  - port: 80
+    name: port-80
     targetPort: 80
     nodePort: 30002
   type: NodePort

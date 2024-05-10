@@ -11,7 +11,6 @@ spec:
   - name: pidev-database
     image: mysql:latest
     env:
-      # Set MySQL root user and password (not recommended for production)
       - name: MYSQL_ROOT_PASSWORD
         value: "root"
     ports:
@@ -21,6 +20,7 @@ spec:
     image: mdjdocker/arctic4_pidev_backend:latest
     ports:
     - containerPort: 9000
+    - containerPort: 2424
       name: backend
     livenessProbe: 
       tcpSocket:
@@ -44,9 +44,14 @@ spec:
   selector:
     app: label-pod-pidev-backend-database
   ports:
-  - port: 9000  
+  - port: 9000
+    name: port-9000
     targetPort: 9000
     nodePort: 30001
+  - port: 2424  
+    name: port-2424
+    targetPort: 2424
+    nodePort: 30003
   type: NodePort
 
 ---
@@ -63,10 +68,15 @@ spec:
   selector:
     app: label-pod-pidev-backend-database
   ports:
-  - port: 9000  
+  - port: 9000
+    name: port-9000
     targetPort: 9000
+  - port: 2424  
+    name: port-2424
+    targetPort: 2424
   type: ClusterIP
 
+---
 
 # Frontend Pod
 
