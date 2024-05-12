@@ -21,8 +21,8 @@ spec:
     ports:
     - containerPort: 9000
       name: cport-9000
-    - containerPort: 2424
-      name: cport-2424
+    - containerPort: 30003
+      name: cport-30003
     livenessProbe: 
       tcpSocket:
         port: 3306 
@@ -49,9 +49,9 @@ spec:
     name: port-9000
     targetPort: 9000
     nodePort: 30001
-  - port: 2424  
-    name: port-2424
-    targetPort: 2424
+  - port: 30003  
+    name: port-30003
+    targetPort: 30003
     nodePort: 30003
   type: NodePort
 
