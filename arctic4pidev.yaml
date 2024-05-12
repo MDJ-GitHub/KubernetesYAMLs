@@ -1,0 +1,103 @@
+# Frontend Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-pidev-frontend
+  labels:
+    app: label-deployment-pidev-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: label-deployment-pidev-frontend
+  template:
+    metadata:
+      labels:
+        app: label-deployment-pidev-frontend
+    spec:
+      containers:
+      - name: pidev-frontend
+        image: mdjdocker/arctic4_pidev_frontend:latest
+        ports:
+        - containerPort: 80
+          name: cport-80
+    
+---
+
+# Frontend Service NodePort
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-pidev-frontend-nodeport
+  labels:
+    app: label-service-pidev-frontend-nodeport
+spec:
+  selector:
+    app: label-deployment-pidev-frontend
+  ports:
+  - port: 80 
+    name: port-80
+    targetPort: 80
+    nodePort: 30002
+  type: NodePort
+  
+---
+
+# Backend + Database Pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-pidev-backend-database
+  labels:
+    app: label-pod-pidev-backend-database
+spec:
+  containers:
+  - name: pidev-database
+    image: mysql:latest
+    env:
+      - name: MYSQL_ROOT_PASSWORD
+        value: "root"
+    ports:
+    - containerPort: 3306
+      name: cport-3306
+  - name: pidev-backend
+    image: mdjdocker/arctic4_pidev_backend:latest
+    ports:
+    - containerPort: 9000
+      name: cport-9000
+    - containerPort: 2424
+      name: cport-2424
+    livenessProbe: 
+      tcpSocket:
+        port: 3306 
+      initialDelaySeconds: 5  
+      periodSeconds: 20       
+      failureThreshold: 3     
+  restartPolicy: Always
+
+---
+
+# Backend Service NodePort
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-pidev-backend-nodeport
+  labels:
+    app: label-service-pidev-backend-database-nodeport
+spec:
+  selector:
+    app: label-pod-pidev-backend-database
+  ports:
+  - port: 9000
+    name: port-9000
+    targetPort: 9000
+    nodePort: 30001
+  - port: 2424  
+    name: port-2424
+    targetPort: 2424
+    nodePort: 30003
+  type: NodePort
