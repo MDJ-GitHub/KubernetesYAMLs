@@ -54,7 +54,7 @@ spec:
         - containerPort: 3303
           name: cport-3303
         volumeMounts:
-        - name: vm-pidev-database
+        - name: volume-pidev-database
           mountPath: /var/lib/mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
