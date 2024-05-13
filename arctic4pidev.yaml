@@ -60,7 +60,7 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: root
       volumes:
-      - name: volume-database-storage
+      - name: volume-pidev-database
         persistentVolumeClaim:
           claimName: pvc-pidev-database
       restartPolicy: Always
