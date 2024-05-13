@@ -1,6 +1,14 @@
 # PICloud Group 2 Deployment Phase
 
-# Database PersistentVolumeClaim
+# Database StorageClass
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: storageclass-pidev-database
+provisioner: kubernetes.io/hostpath
+
+---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -9,26 +17,11 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: storageclass-pidev-database
   resources:
     requests:
       storage: 1Gi
-
----
-
-# Database PersistentVolume
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-pidev-database
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /path/to/host/directory
-
+      
 ---
 
 # Database Deployment
