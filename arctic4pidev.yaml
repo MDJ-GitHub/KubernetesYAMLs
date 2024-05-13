@@ -82,7 +82,7 @@ spec:
           name: cport-9000
         - containerPort: 2424
           name: cport-2424
-  restartPolicy: Always
+      restartPolicy: Always
   
 ---
 
@@ -134,7 +134,7 @@ spec:
         ports:
         - containerPort: 80
           name: cport-80
-  restartPolicy: Always
+      restartPolicy: Always
     
 ---
 
