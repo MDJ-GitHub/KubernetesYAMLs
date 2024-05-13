@@ -1,5 +1,21 @@
 # PICloud Group 2 Deployment Phase
 
+
+# Database StorageClass
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-pidev-database
+provisioner: k8s.io/minikube-hostpath 
+volumeBindingMode: Immediate
+parameters:
+ type: gp2
+allowVolumeExpansion: true
+reclaimPolicy: Retain
+
+---
+
 # Database PersistentVolumeClaim
 
 apiVersion: v1
@@ -9,25 +25,11 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: sc-pidev-database
   resources:
     requests:
       storage: 1Gi
 
----
-
-# Database PersistentVolume
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-pidev-database
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /data/mysql
 ---
 
 # Database Deployment
@@ -49,8 +51,8 @@ spec:
         app: label-deployment-pidev-database
     spec:
       securityContext:
-        runAsUser: 1000
-        fsGroup: 1000  
+        runAsUser: 1000 
+        allowPrivilegeEscalation: false
       containers:
       - name: pidev-database
         image: mysql:latest
