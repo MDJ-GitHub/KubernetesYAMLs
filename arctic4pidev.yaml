@@ -50,12 +50,12 @@ spec:
       labels:
         app: label-deployment-pidev-database
     spec:
-      securityContext:
-        runAsUser: 1000 
-        allowPrivilegeEscalation: false
       containers:
       - name: pidev-database
         image: mysql:latest
+        securityContext:
+            runAsUser: 1000 
+            allowPrivilegeEscalation: false
         ports:
         - containerPort: 3303
           name: cport-3303
