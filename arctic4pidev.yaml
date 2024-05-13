@@ -22,8 +22,8 @@ spec:
       - name: pidev-database
         image: mysql:latest
         ports:
-        - containerPort: 3303
-          name: cport-3303
+        - containerPort: 3306
+          name: cport-3306
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
