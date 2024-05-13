@@ -1,5 +1,20 @@
 # PICloud Group 2 Deployment Phase
 
+# Database PersistentVolumeClaim
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-pidev-database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
 # Database Deployment
 
 apiVersion: apps/v1
