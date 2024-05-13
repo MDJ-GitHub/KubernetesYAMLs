@@ -1,14 +1,6 @@
 # PICloud Group 2 Deployment Phase
 
-# Database StorageClass
-
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: storageclass-pidev-database
-provisioner: kubernetes.io/hostpath
-
----
+# Database PersistentVolumeClaim
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -17,15 +9,28 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: storageclass-pidev-database
   resources:
     requests:
       storage: 1Gi
-      
+
+---
+
+# Database PersistentVolume
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-pidev-database
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data
 ---
 
 # Database Deployment
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -49,13 +54,13 @@ spec:
         - containerPort: 3303
           name: cport-3303
         volumeMounts:
-        - name: database-storage
+        - name: vm-pidev-database
           mountPath: /var/lib/mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
       volumes:
-      - name: database-storage
+      - name: volume-database-storage
         persistentVolumeClaim:
           claimName: pvc-pidev-database
       restartPolicy: Always
@@ -63,7 +68,6 @@ spec:
 ---
 
 # Database Service ClusterIP
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -81,7 +85,6 @@ spec:
 ---
 
 # Backend Deployment
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -111,7 +114,6 @@ spec:
 ---
 
 # Backend Service NodePort
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -135,7 +137,6 @@ spec:
 ---
 
 # Frontend Deployment
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
