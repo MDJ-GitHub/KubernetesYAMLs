@@ -5,13 +5,29 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: claim-pidev-database
+  name: pvc-pidev-database
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
+
+---
+
+# Database PersistentVolume
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-pidev-database
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /path/to/host/directory
 
 ---
 
@@ -48,7 +64,7 @@ spec:
       volumes:
       - name: database-storage
         persistentVolumeClaim:
-          claimName: claim-pidev-database
+          claimName: pvc-pidev-database
       restartPolicy: Always
 
 ---
@@ -154,7 +170,6 @@ spec:
 ---
 
 # Frontend Service NodePort
-
 apiVersion: v1
 kind: Service
 metadata:
