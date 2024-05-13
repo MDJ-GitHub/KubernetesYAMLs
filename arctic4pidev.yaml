@@ -30,11 +30,11 @@ spec:
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
+      volumes:
+      - name: database-storage
+        persistentVolumeClaim:
+          claimName: claim-pidev-database
   restartPolicy: Always
-  volumes:
-  - name: database-storage
-    persistentVolumeClaim:
-      claimName: claim-pidev-database
 
 ---
 
