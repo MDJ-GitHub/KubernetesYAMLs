@@ -56,6 +56,9 @@ spec:
       containers:
       - name: pidev-database
         image: mariadb:latest
+        securityContext:
+            runAsUser: 1000  # adjust to the appropriate user ID
+            fsGroup: 1000   
         ports:
         - containerPort: 3303
           name: cport-3303
