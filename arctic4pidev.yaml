@@ -1,5 +1,24 @@
 # PICloud Group 2 Deployment Phase
 
+# Database PersistentVolume
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-pidev-database
+  labels:
+    type: local
+spec:
+  storageClassName : sc-pidev-database
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data
+    
+---
+
 # Database PersistentVolumeClaim
 
 apiVersion: v1
@@ -7,28 +26,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: pvc-pidev-database
 spec:
+  storageClassName : sc-pidev-database
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
 
----
-
-# Database PersistentVolume
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-pidev-database
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /tmp/mysql
-    
 ---
 
 # Database Deployment
@@ -49,8 +53,6 @@ spec:
       labels:
         app: label-deployment-pidev-database
     spec:
-      securityContext:
-        runAsUser: 1000
       containers:
       - name: pidev-database
         image: mysql:latest
