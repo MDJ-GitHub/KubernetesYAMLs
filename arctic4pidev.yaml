@@ -24,8 +24,18 @@ spec:
         ports:
         - containerPort: 3303
           name: cport-3303
+        volumeMounts:
+        - name: database-storage
+          mountPath: /var/lib/mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
   restartPolicy: Always
-  
+  volumes:
+  - name: database-storage
+    persistentVolumeClaim:
+      claimName: claim-pidev-database
+
 ---
 
 # Database Service ClusterIP
