@@ -27,7 +27,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /
+    path: /data/mysql
 ---
 
 # Database Deployment
