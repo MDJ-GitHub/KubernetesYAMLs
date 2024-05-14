@@ -68,9 +68,9 @@ spec:
         - name: database-storage
           mountPath: /var/lib/mysql
       volumes:
-      - name: database-storage
+      - name: volume-pidev-database
         persistentVolumeClaim:
-          claimName: database-pvc
+          claimName: pvc-pidev-database
       restartPolicy: Always
 
 ---
