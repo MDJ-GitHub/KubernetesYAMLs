@@ -1,5 +1,40 @@
 # PICloud Group 2 Deployment Phase
 
+# Database PersistentVolume
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-pidev-database
+  labels:
+    type: local
+spec:
+  storageClassName : sc-pidev-database
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /var/data/mysql
+    
+---
+
+# Database PersistentVolumeClaim
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-pidev-database
+spec:
+  storageClassName : sc-pidev-database
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
 # Database Deployment
 
 apiVersion: apps/v1
@@ -20,13 +55,20 @@ spec:
     spec:
       containers:
       - name: pidev-database
-        image: mysql:latest
+        image: mdjdocker/arctic4_pidev_database:latest
         ports:
-        - containerPort: 3306
-          name: cport-3306
+        - containerPort: 3303
+          name: cport-3303
+        volumeMounts:
+        - name: volume-pidev-database
+          mountPath: /var/lib/mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
+      volumes:
+      - name: volume-pidev-database
+        persistentVolumeClaim:
+          claimName: pvc-pidev-database
       restartPolicy: Always
 
 ---
