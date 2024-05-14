@@ -53,6 +53,9 @@ spec:
       labels:
         app: label-deployment-pidev-database
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000 
       containers:
       - name: pidev-database
         image: mysql:latest
